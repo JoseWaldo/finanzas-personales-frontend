@@ -20,6 +20,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { AppLogo } from "@/components/shared/app-logo";
 import { loginSchema, type LoginInput } from "@/features/auth/schemas/auth.schema";
 import { useAuth } from "@/hooks/use-auth";
 
@@ -47,8 +48,9 @@ export function LoginForm() {
 
   return (
     <Card className="w-full max-w-sm">
-      <CardHeader>
-        <CardTitle>Iniciar Sesion</CardTitle>
+      <CardHeader className="text-center">
+        <AppLogo showText={false} className="mb-2 justify-center" />
+        <CardTitle className="text-xl">Iniciar sesion</CardTitle>
         <CardDescription>
           Ingresa tus credenciales para acceder a tu cuenta.
         </CardDescription>
@@ -88,7 +90,7 @@ export function LoginForm() {
               </p>
             )}
             <Button type="submit" className="w-full">
-              Iniciar Sesion
+              Iniciar sesion
             </Button>
           </form>
         </Form>
@@ -96,7 +98,7 @@ export function LoginForm() {
       <CardFooter className="flex justify-center">
         <p className="text-sm text-muted-foreground">
           No tienes cuenta?{" "}
-          <Link to="/auth/register" className="text-primary underline">
+          <Link to="/auth/register" className="font-medium text-primary underline">
             Registrate
           </Link>
         </p>

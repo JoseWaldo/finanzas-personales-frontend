@@ -1,4 +1,7 @@
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
+import { useState } from "react";
+
+import { Sidebar } from "@/components/layout/sidebar";
 
 export const Route = createFileRoute("/dashboard")({
   component: DashboardLayout,
@@ -13,22 +16,19 @@ export const Route = createFileRoute("/dashboard")({
 });
 
 function DashboardLayout() {
+  const [collapsed, setCollapsed] = useState(false);
+
   return (
-    <div className="flex min-h-screen flex-col">
-      <header className="border-b">
-        <div className="flex h-16 items-center px-6">
-          <h1 className="text-xl font-semibold">Dashboard</h1>
-          <nav className="ml-auto flex items-center gap-4">
-            <a
-              href="/api/v1/auth/sign-out"
-              className="text-sm text-muted-foreground hover:text-foreground"
-            >
-              Cerrar sesion
-            </a>
-          </nav>
-        </div>
-      </header>
-      <main className="flex-1 p-6">
+    <div className="flex min-h-screen">
+      <Sidebar
+        collapsed={collapsed}
+        onToggle={() => setCollapsed((c) => !c)}
+      />
+      <main
+        className={`flex-1 p-6 transition-all duration-300 ${
+          collapsed ? "ml-16" : "ml-60"
+        }`}
+      >
         <Outlet />
       </main>
     </div>
