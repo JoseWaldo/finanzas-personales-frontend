@@ -22,6 +22,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { AppLogo } from "@/components/shared/app-logo";
 import { registerSchema, type RegisterInput } from "@/features/auth/schemas/auth.schema";
 import { useAuth } from "@/hooks/use-auth";
 
@@ -52,8 +53,9 @@ export function RegisterForm() {
 
   return (
     <Card className="w-full max-w-sm">
-      <CardHeader>
-        <CardTitle>Crear Cuenta</CardTitle>
+      <CardHeader className="text-center">
+        <AppLogo showText={false} className="mb-2 justify-center" />
+        <CardTitle className="text-xl">Crear cuenta</CardTitle>
         <CardDescription>
           Registrate para empezar a gestionar tus finanzas.
         </CardDescription>
@@ -127,7 +129,7 @@ export function RegisterForm() {
       <CardFooter className="flex justify-center">
         <p className="text-sm text-muted-foreground">
           Ya tienes cuenta?{" "}
-          <Link to="/auth/login" className="text-primary underline">
+          <Link to="/auth/login" className="font-medium text-primary underline">
             Inicia sesion
           </Link>
         </p>
