@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "@tanstack/react-router";
 
+import { useRouter } from "@tanstack/react-router";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,7 +27,8 @@ import { loginSchema, type LoginInput } from "@/features/auth/schemas/auth.schem
 import { useAuth } from "@/hooks/use-auth";
 
 export function LoginForm() {
-  const { login } = useAuth();
+  const { login, isLoading } = useAuth();
+  const router = useRouter();
 
   const form = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
@@ -38,7 +41,7 @@ export function LoginForm() {
   async function onSubmit(data: LoginInput) {
     try {
       await login(data);
-      window.location.href = "/dashboard";
+      router.navigate({ to: "/dashboard" });
     } catch {
       form.setError("root", {
         message: "Credenciales invalidas. Intenta de nuevo.",
@@ -89,8 +92,8 @@ export function LoginForm() {
                 {form.formState.errors.root.message}
               </p>
             )}
-            <Button type="submit" className="w-full">
-              Iniciar sesion
+            <Button type="submit" className="w-full" disabled={form.formState.isSubmitting || isLoading}>
+              {form.formState.isSubmitting || isLoading ? "Cargando..." : "Iniciar sesion"}
             </Button>
           </form>
         </Form>

@@ -46,7 +46,7 @@ export async function signIn(data: SignInInput) {
 }
 
 export async function getSession() {
-  return apiClient<SessionResponse | null>("/api/v1/auth/session", {
+  return apiClient<SessionResponse | null>("/api/v1/auth/me", {
     method: "GET",
   });
 }

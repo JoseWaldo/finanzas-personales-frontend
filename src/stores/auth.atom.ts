@@ -1,19 +1,7 @@
 import { atom } from "jotai";
 
-export interface AuthUser {
-  id: string;
-  email: string;
-  name: string;
-  emailVerified: boolean;
-  image?: string;
-}
+import type { User, Session } from "@/types";
 
-export interface AuthSession {
-  id: string;
-  expiresAt: string;
-  userId: string;
-}
-
-export const userAtom = atom<AuthUser | null>(null);
-export const sessionAtom = atom<AuthSession | null>(null);
+export const userAtom = atom<User | null>(null);
+export const sessionAtom = atom<Session | null>(null);
 export const isAuthenticatedAtom = atom((get) => get(userAtom) !== null);
