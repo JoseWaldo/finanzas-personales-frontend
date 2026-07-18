@@ -13,6 +13,9 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as DashboardPresupuestosRouteImport } from './routes/dashboard/presupuestos'
+import { Route as DashboardIngresosRouteImport } from './routes/dashboard/ingresos'
+import { Route as DashboardGastosRouteImport } from './routes/dashboard/gastos'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 
@@ -36,6 +39,21 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardPresupuestosRoute = DashboardPresupuestosRouteImport.update({
+  id: '/presupuestos',
+  path: '/presupuestos',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardIngresosRoute = DashboardIngresosRouteImport.update({
+  id: '/ingresos',
+  path: '/ingresos',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardGastosRoute = DashboardGastosRouteImport.update({
+  id: '/gastos',
+  path: '/gastos',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const AuthRegisterRoute = AuthRegisterRouteImport.update({
   id: '/register',
   path: '/register',
@@ -53,6 +71,9 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/dashboard/gastos': typeof DashboardGastosRoute
+  '/dashboard/ingresos': typeof DashboardIngresosRoute
+  '/dashboard/presupuestos': typeof DashboardPresupuestosRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRoutesByTo {
@@ -60,6 +81,9 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/dashboard/gastos': typeof DashboardGastosRoute
+  '/dashboard/ingresos': typeof DashboardIngresosRoute
+  '/dashboard/presupuestos': typeof DashboardPresupuestosRoute
   '/dashboard': typeof DashboardIndexRoute
 }
 export interface FileRoutesById {
@@ -69,6 +93,9 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/dashboard/gastos': typeof DashboardGastosRoute
+  '/dashboard/ingresos': typeof DashboardIngresosRoute
+  '/dashboard/presupuestos': typeof DashboardPresupuestosRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRouteTypes {
@@ -79,9 +106,20 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/auth/login'
     | '/auth/register'
+    | '/dashboard/gastos'
+    | '/dashboard/ingresos'
+    | '/dashboard/presupuestos'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/auth/login' | '/auth/register' | '/dashboard'
+  to:
+    | '/'
+    | '/auth'
+    | '/auth/login'
+    | '/auth/register'
+    | '/dashboard/gastos'
+    | '/dashboard/ingresos'
+    | '/dashboard/presupuestos'
+    | '/dashboard'
   id:
     | '__root__'
     | '/'
@@ -89,6 +127,9 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/auth/login'
     | '/auth/register'
+    | '/dashboard/gastos'
+    | '/dashboard/ingresos'
+    | '/dashboard/presupuestos'
     | '/dashboard/'
   fileRoutesById: FileRoutesById
 }
@@ -128,6 +169,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardIndexRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/presupuestos': {
+      id: '/dashboard/presupuestos'
+      path: '/presupuestos'
+      fullPath: '/dashboard/presupuestos'
+      preLoaderRoute: typeof DashboardPresupuestosRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/ingresos': {
+      id: '/dashboard/ingresos'
+      path: '/ingresos'
+      fullPath: '/dashboard/ingresos'
+      preLoaderRoute: typeof DashboardIngresosRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/gastos': {
+      id: '/dashboard/gastos'
+      path: '/gastos'
+      fullPath: '/dashboard/gastos'
+      preLoaderRoute: typeof DashboardGastosRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/auth/register': {
       id: '/auth/register'
       path: '/register'
@@ -158,10 +220,16 @@ const AuthRouteChildren: AuthRouteChildren = {
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface DashboardRouteChildren {
+  DashboardGastosRoute: typeof DashboardGastosRoute
+  DashboardIngresosRoute: typeof DashboardIngresosRoute
+  DashboardPresupuestosRoute: typeof DashboardPresupuestosRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardGastosRoute: DashboardGastosRoute,
+  DashboardIngresosRoute: DashboardIngresosRoute,
+  DashboardPresupuestosRoute: DashboardPresupuestosRoute,
   DashboardIndexRoute: DashboardIndexRoute,
 }
 

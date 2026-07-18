@@ -26,8 +26,12 @@ src/
     auth.api.ts      # signUp, signIn, getSession, signOut
   components/
     ui/              # shadcn/ui components (Button, Input, Card, Label, Form)
-    layout/          # Layout components
-    shared/          # Reusable shared components
+    layout/
+      sidebar.tsx    # Collapsible sidebar with navigation, theme toggle, logout
+    shared/
+      app-logo.tsx   # Balanz brand logo (reusable, with/without text)
+      theme-provider.tsx  # Syncs theme atom with HTML .dark class
+      theme-toggle.tsx    # Sun/Moon toggle button
   features/          # Feature modules
     auth/
       components/    # LoginForm, RegisterForm
@@ -39,14 +43,18 @@ src/
     utils.ts         # cn() utility (clsx + tailwind-merge)
   routes/            # TanStack Router file-based routes
     __root.tsx       # Root route (Outlet only)
-    index.tsx        # Home page with redirect to login or dashboard
-    auth.tsx         # Auth layout (centered card)
+    index.tsx        # Landing page (hero + features + CTAs)
+    auth.tsx         # Auth layout (header with logo + centered content)
     auth/login.tsx   # Login page
     auth/register.tsx# Register page
-    dashboard.tsx    # Protected dashboard layout (checks session)
-    dashboard/index.tsx # Dashboard home
+    dashboard.tsx    # Protected dashboard layout with collapsible sidebar
+    dashboard/index.tsx     # Dashboard home (stats cards + empty states)
+    dashboard/ingresos.tsx  # Ingresos placeholder
+    dashboard/gastos.tsx    # Gastos placeholder
+    dashboard/presupuestos.tsx # Presupuestos placeholder
   stores/            # Jotai atoms
     auth.atom.ts     # userAtom, sessionAtom, isAuthenticatedAtom
+    theme.atom.ts    # Theme atom (light/dark) with localStorage persistence
   types/             # Shared TypeScript types
   globals.css        # Tailwind v4 directives + @theme (shadcn design tokens)
   App.tsx            # JotaiProvider + RouterProvider
@@ -65,6 +73,88 @@ src/
 - **API calls**: Use `apiClient` from `@/api/client` for custom endpoints. Use functions from `@/api/auth.api` for auth operations. The client automatically includes credentials and handles errors.
 - **Protected routes**: Protected layout routes (like `dashboard.tsx`) use `beforeLoad` with a fetch to `/api/v1/auth/session`. Redirect to `/auth/login` if not authenticated.
 - **Auth flow**: Better Auth client (`better-auth` package) is included for client-side utilities. Auth state is managed through Jotai atoms populated via the `useAuth` hook which calls `getSession()` on mount.
+- **Theme**: Light/dark mode managed via `themeAtom` (Jotai + localStorage). `ThemeProvider` syncs the `dark` class on `<html>`. An inline `<script>` in `index.html` applies the class before React loads to prevent flash. `ThemeToggle` provides a sun/moon button. If no preference is stored, system `prefers-color-scheme` is used as default.
+
+---
+
+## Design System
+
+### Brand
+
+- **Name**: Balanz
+- **Tagline**: "Tus finanzas en equilibrio"
+- **Logo**: Rounded square with white checkmark on primary blue background (`#1354BE`)
+
+### Typography
+
+- **Font**: [Hanken Grotesk](https://fonts.google.com/specimen/Hanken+Grotesk) (Google Fonts, weight 100–900)
+- **CSS**: `font-optical-sizing: auto`, `antialiased`
+- **Tailwind**: `--font-sans: "Hanken Grotesk"` registered in `@theme`
+
+### Color Palette
+
+#### Primary & Neutral
+
+| Token | Hex | HSL | Usage |
+|---|---|---|---|
+| Primary | `#1354BE` | `hsl(214 82% 41%)` | Buttons, links, accent elements |
+| Primary dark | `#002A6E` | `hsl(217 100% 22%)` | Text (foreground), headings |
+| Primary light | `#0062FF` | `hsl(217 100% 50%)` | Focus rings, primary in dark mode |
+| Muted fg | `#52637D` | `hsl(216 21% 41%)` | Secondary text, descriptions |
+| Background | `#F2F7FF` | `hsl(217 100% 97%)` | Page background (light mode) |
+| White | `#FFFFFF` | `hsl(0 0% 100%)` | Cards, popovers |
+
+#### Semantic
+
+| Token | Hex | Usage |
+|---|---|---|
+| Destructive | `#F25555` | Error, delete, negative amounts |
+| Warning | `#FFBE1A` | Alerts, caution states |
+
+#### Chart & Data
+
+| Token | Hex | Usage |
+|---|---|---|
+| Chart 1 | `#2462C7` | Primary data series (blue) |
+| Chart 2 | `#28A364` | Income, positive values (green) |
+| Chart 3 | `#F7C954` | Budgets, neutral metrics (yellow) |
+| Chart 4 | `#F25C5C` | Expenses, negative values (red) |
+| Chart 5 | `#2A245C` | Secondary data series (purple) |
+
+### Light Mode
+
+- Background: `#F2F7FF` (very light blue) — soft and airy, avoids pure white fatigue
+- Cards: `#FFFFFF` — clean contrast against the tinted background
+- Text: `#002A6E` (dark navy) — high contrast without pure black harshness
+- Primary: `#1354BE` — strong corporate blue, conveys trust and stability
+- Muted text: `#52637D` — readable but secondary, not pure gray
+- Borders: soft blue-gray tones, subtle separation
+
+### Dark Mode
+
+- Background: deep navy (`hsl(217 50% 6%)`)
+- Primary brightens to `#0062FF` for proper contrast on dark surfaces
+- Cards and surfaces: dark blue-gray with subtle elevation
+- Text: light blue-white, avoiding harsh pure white
+- Chart colors are slightly brightened to maintain visibility on dark backgrounds
+
+### Radius
+
+- Default: `0.625rem` (10px) — smooth but not overly rounded
+
+### Spacing & Shadows
+
+- Cards use `shadow-sm` with `hover:shadow-md` transition
+- Feature cards on landing page have `ring-1 ring-primary/20` for subtle definition
+- Stats cards use colored icon backgrounds at 10% opacity
+
+### Icon Usage
+
+- **Lucide React**: all icons throughout the app
+- Stats cards: `Wallet`, `ArrowUpRight`, `ArrowDownRight`, `DollarSign`
+- Theme: `Sun` / `Moon`
+- Navigation: `LayoutDashboard`, `Wallet`, `TrendingDown`, `PiggyBank`, `LogOut`
+- Feature cards: `Wallet`, `PiggyBank`, `BarChart3`
 
 ---
 
