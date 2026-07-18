@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "@tanstack/react-router";
 
+import { useRouter } from "@tanstack/react-router";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -24,7 +26,8 @@ import { registerSchema, type RegisterInput } from "@/features/auth/schemas/auth
 import { useAuth } from "@/hooks/use-auth";
 
 export function RegisterForm() {
-  const { register: registerUser } = useAuth();
+  const { register: registerUser, isLoading } = useAuth();
+  const router = useRouter();
 
   const form = useForm<RegisterInput>({
     resolver: zodResolver(registerSchema),
@@ -39,7 +42,7 @@ export function RegisterForm() {
   async function onSubmit(data: RegisterInput) {
     try {
       await registerUser(data);
-      window.location.href = "/dashboard";
+      router.navigate({ to: "/dashboard" });
     } catch {
       form.setError("root", {
         message: "Error al registrar. Intenta de nuevo.",
@@ -115,8 +118,8 @@ export function RegisterForm() {
                 {form.formState.errors.root.message}
               </p>
             )}
-            <Button type="submit" className="w-full">
-              Registrarse
+            <Button type="submit" className="w-full" disabled={form.formState.isSubmitting || isLoading}>
+              {form.formState.isSubmitting || isLoading ? "Cargando..." : "Registrarse"}
             </Button>
           </form>
         </Form>
