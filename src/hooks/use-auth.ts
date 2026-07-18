@@ -33,18 +33,16 @@ export function useAuth() {
   const login = useCallback(async (data: LoginInput) => {
     const result = await signIn(data);
     setUser(result.user);
-    setSession(result.session);
-    queryClient.setQueryData(SESSION_QUERY_KEY, result);
+    queryClient.invalidateQueries({ queryKey: SESSION_QUERY_KEY });
     return result;
-  }, [setUser, setSession, queryClient]);
+  }, [setUser, queryClient]);
 
   const register = useCallback(async (data: RegisterInput) => {
     const result = await signUp(data);
     setUser(result.user);
-    setSession(result.session);
-    queryClient.setQueryData(SESSION_QUERY_KEY, result);
+    queryClient.invalidateQueries({ queryKey: SESSION_QUERY_KEY });
     return result;
-  }, [setUser, setSession, queryClient]);
+  }, [setUser, queryClient]);
 
   const logout = useCallback(async () => {
     await signOut();
