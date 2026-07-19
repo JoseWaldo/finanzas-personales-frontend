@@ -8,13 +8,9 @@ import { getSession } from "@/api/auth.api";
 export const Route = createFileRoute("/")({
   component: Index,
   beforeLoad: async () => {
-    try {
-      const data = await getSession();
-      if (data?.user) {
-        throw redirect({ to: "/dashboard" });
-      }
-    } catch {
-      // No session, stay on landing page
+    const data = await getSession().catch(() => null);
+    if (data?.user) {
+      throw redirect({ to: "/dashboard" });
     }
   },
 });
@@ -40,7 +36,7 @@ const features = [
 function Index() {
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="sticky top-0 z-50 border-b border-border/30 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="mx-auto flex h-16 max-w-6xl items-center px-4">
           <AppLogo />
         </div>
@@ -91,7 +87,7 @@ function Index() {
           </div>
         </section>
 
-        <section className="border-t bg-muted/40 px-4 py-20">
+        <section className="border-t border-border/30 bg-muted/40 px-4 py-20">
           <div className="mx-auto max-w-5xl">
             <h2 className="text-center text-2xl font-bold tracking-tight sm:text-3xl">
               Todo lo que necesitas para organizar tus finanzas
@@ -103,7 +99,7 @@ function Index() {
               {features.map(({ icon: Icon, title, description }) => (
                 <div
                   key={title}
-                  className="flex flex-col items-center rounded-xl border bg-card p-6 text-center shadow-sm"
+                  className="flex flex-col items-center rounded-xl border border-border/30 bg-card p-6 text-center shadow-sm"
                 >
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
                     <Icon className="h-6 w-6 text-primary" />
@@ -119,7 +115,7 @@ function Index() {
         </section>
       </main>
 
-      <footer className="border-t px-4 py-8">
+      <footer className="border-t border-border/30 px-4 py-8">
         <div className="mx-auto flex max-w-5xl items-center justify-between">
           <AppLogo />
           <p className="text-xs text-muted-foreground">
