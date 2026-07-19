@@ -15,6 +15,7 @@ const stats = [
     value: "$0.00",
     description: "Tu patrimonio actual",
     icon: Wallet,
+    accentClass: "border-t-chart-1",
     color: "text-chart-1",
     bg: "bg-chart-1/10",
   },
@@ -23,24 +24,25 @@ const stats = [
     value: "$0.00",
     description: "+12% vs mes anterior",
     icon: ArrowUpRight,
+    accentClass: "border-t-chart-2",
     color: "text-chart-2",
     bg: "bg-chart-2/10",
-    positive: true,
   },
   {
     title: "Gastos del mes",
     value: "$0.00",
     description: "-8% vs mes anterior",
     icon: ArrowDownRight,
+    accentClass: "border-t-chart-4",
     color: "text-chart-4",
     bg: "bg-chart-4/10",
-    positive: false,
   },
   {
     title: "Presupuesto",
     value: "$0.00",
     description: "Restante este mes",
     icon: DollarSign,
+    accentClass: "border-t-chart-3",
     color: "text-chart-3",
     bg: "bg-chart-3/10",
   },
@@ -52,7 +54,7 @@ function DashboardIndex() {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl font-bold tracking-tight">
+        <h2 className="text-3xl font-normal tracking-tight">
           Bienvenido, {user?.name ?? "Usuario"}
         </h2>
         <p className="text-muted-foreground">
@@ -61,10 +63,13 @@ function DashboardIndex() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {stats.map(({ title, value, description, icon: Icon, color, bg }) => (
+        {stats.map(({ title, value, description, icon: Icon, accentClass, color, bg }) => (
           <Card
             key={title}
-            className="transition-shadow hover:shadow-md"
+            className={cn(
+              "group border-t-2 border-t-transparent transition-colors hover:border-primary/20",
+              accentClass
+            )}
           >
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -75,7 +80,7 @@ function DashboardIndex() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{value}</div>
+              <div className="text-2xl font-normal">{value}</div>
               <p className="mt-1 text-xs text-muted-foreground">{description}</p>
             </CardContent>
           </Card>
@@ -85,7 +90,7 @@ function DashboardIndex() {
       <div className="grid gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Movimientos recientes</CardTitle>
+            <CardTitle className="text-lg font-medium">Movimientos recientes</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground">
@@ -100,7 +105,7 @@ function DashboardIndex() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Distribucion de gastos</CardTitle>
+            <CardTitle className="text-lg font-medium">Distribucion de gastos</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground">

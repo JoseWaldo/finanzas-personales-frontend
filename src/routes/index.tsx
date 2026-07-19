@@ -3,12 +3,13 @@ import { ArrowRight, BarChart3, PiggyBank, Wallet } from "lucide-react";
 
 import { AppLogo } from "@/components/shared/app-logo";
 import { Button } from "@/components/ui/button";
-import { getSession } from "@/api/auth.api";
+import { authClient } from "@/lib/auth-client";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
   component: Index,
   beforeLoad: async () => {
-    const data = await getSession().catch(() => null);
+    const { data } = await authClient.getSession();
     if (data?.user) {
       throw redirect({ to: "/dashboard" });
     }
@@ -20,10 +21,11 @@ const features = [
     icon: Wallet,
     title: "Ingresos y gastos",
     description: "Registra cada movimiento y manten el control total de tu dinero.",
+    large: true,
   },
   {
     icon: PiggyBank,
-    title: "Presupuestos",
+    title: "Presupuestos inteligentes",
     description: "Define metas de ahorro y controla tus gastos por categoria.",
   },
   {
@@ -43,7 +45,7 @@ function Index() {
       </header>
 
       <main className="flex flex-1 flex-col">
-        <section className="flex flex-1 flex-col items-center justify-center px-4 py-20 text-center">
+        <section className="flex flex-1 flex-col items-center justify-center px-4 py-28 lg:py-32 text-center">
           <div className="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-2xl bg-primary/10 ring-1 ring-primary/20">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -63,9 +65,9 @@ function Index() {
             </svg>
           </div>
 
-          <h1 className="max-w-2xl text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+          <h1 className="max-w-2xl text-4xl leading-tight font-normal tracking-tight sm:text-5xl lg:text-[56px] lg:leading-[1.05]">
             Tus finanzas en
-            <span className="text-primary"> equilibrio</span>
+            <span className="text-primary dark:glow-text"> equilibrio</span>
           </h1>
           <p className="mt-6 max-w-lg text-lg text-muted-foreground">
             Balanz te ayuda a gestionar tus ingresos, gastos y presupuestos de
@@ -74,7 +76,7 @@ function Index() {
 
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
             <Link to="/auth/register">
-              <Button size="lg" className="h-11 px-8 text-base">
+              <Button size="lg" className="h-11 px-8 text-base ring-1 ring-primary/30">
                 Comenzar gratis
                 <ArrowRight className="ml-1 h-4 w-4" />
               </Button>
@@ -87,25 +89,33 @@ function Index() {
           </div>
         </section>
 
-        <section className="border-t border-border/30 bg-muted/40 px-4 py-20">
+        <section className="border-t border-border/30 bg-muted/40 px-4 py-28 lg:py-32">
           <div className="mx-auto max-w-5xl">
-            <h2 className="text-center text-2xl font-bold tracking-tight sm:text-3xl">
+            <h2 className="text-center text-3xl font-normal tracking-tight lg:text-4xl lg:leading-[1.2]">
               Todo lo que necesitas para organizar tus finanzas
             </h2>
             <p className="mt-3 text-center text-muted-foreground">
               Herramientas simples, resultados claros.
             </p>
-            <div className="mt-12 grid gap-8 sm:grid-cols-3">
-              {features.map(({ icon: Icon, title, description }) => (
+
+            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {features.map(({ icon: Icon, title, description, large }) => (
                 <div
                   key={title}
-                  className="flex flex-col items-center rounded-xl border border-border/30 bg-card p-6 text-center shadow-sm"
+                  className={cn(
+                    "group flex flex-col rounded-xl border border-border/30 bg-card p-6 transition-colors",
+                    "hover:border-primary/20",
+                    large && "sm:col-span-2"
+                  )}
                 >
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                    <Icon className="h-6 w-6 text-primary" />
+                  {large && (
+                    <div className="-mx-6 -mt-6 mb-5 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+                  )}
+                  <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10">
+                    <Icon className="h-5 w-5 text-primary" />
                   </div>
-                  <h3 className="font-semibold">{title}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground">
+                  <h3 className="text-base font-medium">{title}</h3>
+                  <p className="mt-1.5 text-sm text-muted-foreground">
                     {description}
                   </p>
                 </div>

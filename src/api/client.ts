@@ -1,23 +1,16 @@
-const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
-
-interface RequestOptions extends RequestInit {
-  auth?: boolean;
-}
-
+import { env } from "@/config/env";
 
 export async function apiClient<T = unknown>(
   endpoint: string,
-  options: RequestOptions = {}
+  options: RequestInit = {}
 ): Promise<T> {
-  const { auth = false, ...fetchOptions } = options;
-
   const headers: HeadersInit = {
     "Content-Type": "application/json",
-    ...fetchOptions.headers,
+    ...options.headers,
   };
 
-  const response = await fetch(`${API_URL}${endpoint}`, {
-    ...fetchOptions,
+  const response = await fetch(`${env.apiUrl}${endpoint}`, {
+    ...options,
     credentials: "include",
     headers,
   });
@@ -33,5 +26,3 @@ export async function apiClient<T = unknown>(
 
   return response.json();
 }
-
-export { API_URL };

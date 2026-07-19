@@ -1,5 +1,5 @@
 import { Link, useLocation, useRouter } from "@tanstack/react-router";
-import { LayoutDashboard, Wallet, TrendingDown, PiggyBank, LogOut, ChevronLeft, X } from "lucide-react";
+import { LayoutDashboard, Wallet, TrendingDown, PiggyBank, LogOut, ChevronLeft, ChevronRight, X } from "lucide-react";
 
 import { AppLogo } from "@/components/shared/app-logo";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
@@ -68,39 +68,34 @@ export function Sidebar({ collapsed, mobileOpen, onToggle, onMobileClose }: Side
           !mobileOpen && !collapsed && "md:w-60",
         )}
       >
-        <div className="flex h-16 items-center justify-between px-3">
+        <div className="relative flex h-16 items-center justify-between px-3">
           <AppLogo
             showText={expanded}
             className={cn("overflow-hidden transition-opacity", !expanded && "justify-center")}
           />
-          {mobileOpen ? (
+
+          {mobileOpen && (
             <button
               onClick={onMobileClose}
-              className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+              className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer"
             >
               <X className="h-4 w-4" />
-            </button>
-          ) : (
-            <button
-              onClick={onToggle}
-              className={cn(
-                "hidden md:flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                collapsed && "hidden",
-              )}
-            >
-              <ChevronLeft className="h-4 w-4" />
             </button>
           )}
         </div>
 
-        {collapsed && !mobileOpen && (
-          <button
-            onClick={onToggle}
-            className="mx-auto mb-2 hidden md:flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-          >
-            <ChevronLeft className="h-4 w-4 rotate-180" />
-          </button>
-        )}
+        <button
+          onClick={onToggle}
+          className={cn(
+            "absolute right-0 top-1/2 z-10 hidden md:flex -translate-y-1/2 translate-x-1/2 h-6 w-6 items-center justify-center rounded border border-border/40 bg-background text-muted-foreground shadow-sm hover:text-foreground transition-all cursor-pointer",
+          )}
+        >
+          {collapsed ? (
+            <ChevronRight className="h-3.5 w-3.5" />
+          ) : (
+            <ChevronLeft className="h-3.5 w-3.5" />
+          )}
+        </button>
 
         <nav className="flex-1 space-y-1 px-3 py-2">
           {navItems.map(({ to, icon: Icon, label, exact }) => {
@@ -132,7 +127,7 @@ export function Sidebar({ collapsed, mobileOpen, onToggle, onMobileClose }: Side
           <button
             onClick={handleLogout}
             className={cn(
-              "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-sidebar-foreground transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+              "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-sidebar-foreground transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer",
               !expanded && "justify-center px-2",
             )}
           >

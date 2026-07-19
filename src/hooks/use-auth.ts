@@ -1,60 +1,53 @@
-import { useAtom } from "jotai";
 import { useCallback } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { getSession, signIn, signUp, signOut } from "@/api/auth.api";
-import { userAtom, sessionAtom } from "@/stores/auth.atom";
+import { authClient } from "@/lib/auth-client";
 import type { LoginInput, RegisterInput } from "@/features/auth/schemas/auth.schema";
 
-const SESSION_QUERY_KEY = ["session"];
-
 export function useAuth() {
-  const [user, setUser] = useAtom(userAtom);
-  const [session, setSession] = useAtom(sessionAtom);
-  const queryClient = useQueryClient();
+  const {
+    data: session,
+    isPending: isLoading,
+    error,
+  } = authClient.useSession();
 
-  const { isLoading } = useQuery({
-    queryKey: SESSION_QUERY_KEY,
-    queryFn: getSession,
-    staleTime: 5 * 60 * 1000,
-    retry: false,
-    select: (data) => {
-      if (data) {
-        setUser(data.user);
-        setSession(data.session);
-      } else {
-        setUser(null);
-        setSession(null);
-      }
-      return data;
-    },
-  });
+  const user = session?.user ?? null;
 
   const login = useCallback(async (data: LoginInput) => {
-    const result = await signIn(data);
-    setUser(result.user);
-    queryClient.invalidateQueries({ queryKey: SESSION_QUERY_KEY });
-    return result;
-  }, [setUser, queryClient]);
+    const result = await authClient.signIn.email({
+      email: data.email,
+      password: data.password,
+    });
+
+    if (result.error) {
+      throw new Error(result.error.message ?? "Credenciales invalidas");
+    }
+
+    return result.data;
+  }, []);
 
   const register = useCallback(async (data: RegisterInput) => {
-    const result = await signUp(data);
-    setUser(result.user);
-    queryClient.invalidateQueries({ queryKey: SESSION_QUERY_KEY });
-    return result;
-  }, [setUser, queryClient]);
+    const result = await authClient.signUp.email({
+      email: data.email,
+      password: data.password,
+      name: data.name,
+    });
+
+    if (result.error) {
+      throw new Error(result.error.message ?? "Error al registrar");
+    }
+
+    return result.data;
+  }, []);
 
   const logout = useCallback(async () => {
-    await signOut();
-    setUser(null);
-    setSession(null);
-    queryClient.setQueryData(SESSION_QUERY_KEY, null);
-  }, [setUser, setSession, queryClient]);
+    await authClient.signOut();
+  }, []);
 
   return {
     user,
     session,
     isLoading,
+    error,
     isAuthenticated: !!user,
     login,
     register,

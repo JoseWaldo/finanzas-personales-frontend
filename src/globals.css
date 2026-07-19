@@ -20,6 +20,7 @@
   --border: hsl(217 30% 88%);
   --input: hsl(217 30% 88%);
   --ring: hsl(217 100% 50%);
+  --glow: hsl(214 82% 41%);
   --chart-1: hsl(217 69% 46%);
   --chart-2: hsl(149 61% 40%);
   --chart-3: hsl(43 91% 65%);
@@ -56,6 +57,7 @@
   --border: hsl(217 25% 18%);
   --input: hsl(217 25% 18%);
   --ring: hsl(217 100% 50%);
+  --glow: hsl(217 100% 50%);
   --chart-1: hsl(217 80% 60%);
   --chart-2: hsl(149 70% 50%);
   --chart-3: hsl(43 95% 60%);
@@ -92,6 +94,7 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-glow: var(--glow);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -106,6 +109,10 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
   --radius: var(--radius);
+}
+
+@utility glow-text {
+  text-shadow: 0 0 24px var(--glow);
 }
 
 body {

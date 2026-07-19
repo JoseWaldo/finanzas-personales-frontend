@@ -1,68 +1,95 @@
-# Sistema de Diseño Web — "Supabase" en clave púrpura
+# Sistema de Diseño — Balanz
 
-Adaptación del lenguaje visual de Supabase (fondo oscuro, alto contraste, estética developer-first) reemplazando el verde esmeralda de marca por una paleta púrpura, conservando la estructura, jerarquía tipográfica y filosofía de espaciado que hacen reconocible a Supabase.
+Sistema de diseño propio inspirado en la filosofía visual de Supabase (fondo oscuro, alto contraste, estética developer-first, separación por bordes) con una paleta azul de marca conservadora y profesional.
 
 ---
 
 ## 1. Paleta de color
 
-| Token | Hex | Uso |
-|---|---|---|
-| `bg-base` | `#121016` | Fondo principal de página (negro con temperatura violeta) |
-| `surface-elevated` | `#1E1B24` | Tarjetas, paneles, code blocks |
-| `border-subtle` | `#33303C` | Líneas divisorias, bordes de tarjetas (Supabase separa por línea, no por sombra) |
-| `brand-purple` | `#9333EA` | Acento de marca: CTAs, links activos, glow del hero |
-| `brand-purple-light` | `#C084FC` | Hover states, gradientes, resaltados de código |
-| `text-primary` | `#FAFAFA` | Titulares y texto principal |
-| `text-secondary` | `#B4B4B4` | Subtítulos, descripciones |
-| `text-muted` | `#898989` | Metadatos, timestamps, labels secundarias |
+Los tokens de color son variables CSS definidas en `globals.css` con doble tema (light/dark). Se usa el sistema de tokens semánticos de Tailwind v4.
 
-**Filosofía de color:** igual que Supabase evita sombras y genera profundidad por contraste de superficie, aquí el púrpura se usa con moderación — como un "glow" puntual (headline, botón primario, bordes activos), nunca como relleno de grandes superficies. El fondo se mantiene casi negro para que el púrpura brille por contraste, replicando el efecto "terminal en la oscuridad" del original.
+### Tema claro
+
+| Token CSS | HSL | Uso |
+|---|---|---|
+| `--background` | `hsl(217 100% 97%)` | Fondo principal de página |
+| `--foreground` | `hsl(217 100% 22%)` | Texto principal |
+| `--card` | `hsl(0 0% 100%)` | Tarjetas, paneles |
+| `--card-foreground` | `hsl(217 100% 22%)` | Texto en tarjetas |
+| `--primary` | `hsl(214 82% 41%)` | Acento de marca: CTAs, links activos |
+| `--primary-foreground` | `hsl(0 0% 100%)` | Texto sobre acento |
+| `--secondary` | `hsl(217 80% 94%)` | Fondo secundario |
+| `--secondary-foreground` | `hsl(217 100% 22%)` | Texto sobre secundario |
+| `--muted` | `hsl(217 40% 93%)` | Fondo atenuado |
+| `--muted-foreground` | `hsl(216 21% 41%)` | Texto secundario, descripciones |
+| `--accent` | `hsl(217 80% 94%)` | Fondo de acento (hover) |
+| `--accent-foreground` | `hsl(217 100% 22%)` | Texto sobre acento |
+| `--border` | `hsl(217 30% 88%)` | Líneas divisorias, bordes |
+| `--input` | `hsl(217 30% 88%)` | Bordes de inputs |
+| `--ring` | `hsl(217 100% 50%)` | Anillos de focus, glow |
+| `--destructive` | `hsl(0 85% 64%)` | Estados de error/destrucción |
+
+### Tema oscuro
+
+| Token CSS | HSL | Uso |
+|---|---|---|
+| `--background` | `hsl(217 50% 6%)` | Fondo principal (casi negro con temperatura azul) |
+| `--foreground` | `hsl(217 30% 90%)` | Texto principal |
+| `--card` | `hsl(217 40% 10%)` | Tarjetas, superficie elevada |
+| `--card-foreground` | `hsl(217 30% 90%)` | Texto en tarjetas |
+| `--primary` | `hsl(217 100% 50%)` | Acento de marca: CTAs, glow del hero |
+| `--primary-foreground` | `hsl(217 30% 98%)` | Texto sobre acento |
+| `--secondary` | `hsl(217 30% 16%)` | Fondo secundario |
+| `--muted-foreground` | `hsl(217 15% 55%)` | Metadatos, labels secundarias |
+| `--border` | `hsl(217 25% 18%)` | Líneas divisorias, bordes de tarjetas |
+| `--sidebar` | `hsl(217 40% 8%)` | Fondo del sidebar |
+| `--sidebar-foreground` | `hsl(217 25% 85%)` | Texto del sidebar |
+
+**Filosofía de color:** el azul (`--primary`) se usa con moderación — como un "glow" puntual (headline, botón primario, bordes activos), nunca como relleno de grandes superficies. El fondo oscuro se mantiene casi negro para que el azul brille por contraste. La separación entre superficies se logra con bordes (`border`), no con sombras.
 
 ---
 
 ## 2. Tipografía
 
-Igual que el sistema original, se recomienda **una sola familia sans para todo el texto** (evitando mezclar demasiadas fuentes) más **una monoespaciada para código**, con restricción deliberada de pesos: la jerarquía se construye con tamaño y tracking, no con negritas.
+Una sola familia sans para todo el texto, con restricción deliberada de pesos: la jerarquía se construye con tamaño y tracking, no con negritas.
 
-| Rol | Fuente | Tamaño | Peso | Line-height | Letter-spacing | Dónde se usa |
-|---|---|---|---|---|---|---|
-| Hero display | Circular (o alternativa libre: **Inter** / **General Sans**) | 72px | 400 (Regular) | 72px (leading 1.0) | normal | Titular principal del hero, línea comprimida sin aire vertical extra |
-| Section heading | Circular / Inter | 36px | 400 | 43.2px | normal | Encabezados de cada sección (`<h2>`) |
-| Subheading | Circular / Inter | 24px | 400 | 32px | -0.16px | Subtítulos de sección, títulos de tarjetas de features |
-| Large body | Circular / Inter | 18px | 400 | 28px | normal | Párrafos destacados bajo el hero |
-| Body default | Circular / Inter | 16px | 400 | 24px | normal | Texto de párrafo estándar |
-| Body medium | Circular / Inter | 14px | 400 | 20px | normal | Texto secundario, descripciones de tarjetas |
-| Label medium | Circular / Inter | 14px | **500 (Medium)** | 20px | normal | Links de navegación, texto de botones (único lugar con peso >400) |
-| Label small | Circular / Inter | 12px | 400 | 16px | normal | Badges, metadatos, captions |
-| Código | **Source Code Pro** (o **JetBrains Mono**) | 12–14px | 400–500 | 1.5 | normal | Bloques de código, terminal, snippets inline |
+| Rol | Fuente | Tamaño | Peso | Line-height | Dónde se usa |
+|---|---|---|---|---|---|
+| Hero display | Hanken Grotesk | 56-72px | 400 (Regular) | 1.0 | Titular principal del hero |
+| Section heading | Hanken Grotesk | 28-36px | 400 | 1.2 | Encabezados de sección (`<h2>`) |
+| Subheading | Hanken Grotesk | 20-24px | 400 | 1.3 | Títulos de tarjetas, subtítulos |
+| Body default | Hanken Grotesk | 16px | 400 | 1.5 | Texto de párrafo estándar |
+| Body medium | Hanken Grotesk | 14px | 400 | 1.4 | Texto secundario, descripciones |
+| Label medium | Hanken Grotesk | 14px | **500 (Medium)** | 1.4 | Links de navegación, texto de botones |
+| Label small | Hanken Grotesk | 12px | 400 | 1.3 | Badges, metadatos, captions |
 
 **Reglas de peso:**
-- El **400 (Regular)** domina el 90% del contenido — evita que la interfaz se sienta "gritada".
-- El **500 (Medium)** se reserva exclusivamente para elementos interactivos/de navegación (botones, links del menú), como señal sutil de "esto es accionable".
-- **No se usa 700 (Bold)** en ningún punto: la jerarquía visual la da el tamaño, el color (púrpura) y el espaciado, no el grosor de trazo.
+- El **400 (Regular)** domina el 90% del contenido.
+- El **500 (Medium)** se reserva exclusivamente para elementos interactivos (botones, links del menú).
+- **No se usa 700 (Bold)** en ningún punto.
 
 ---
 
 ## 3. Layout y estructura
 
-- **Espaciado entre secciones:** 90–128px, para un ritmo "cinematográfico" donde cada sección se siente como una escena aislada en el fondo oscuro.
-- **Espaciado interno:** denso (16–24px) dentro de cada sección, generando bloques de información concentrados.
-- **Separación por borde, no por sombra:** usar `border-subtle` (1px) para delimitar tarjetas y paneles en vez de `box-shadow`. Si se necesita profundidad, un `box-shadow` mínimo y funcional: `rgba(0,0,0,0.1) 0px 4px 12px`, sólo en focus states.
-- **Grid tipo "bento"** para secciones de features: tarjetas de tamaños desiguales, cada una con un ícono lineal o mini-diagrama con glow púrpura.
-- **Breakpoint principal:** un único quiebre en 600px, priorizando mobile-first y progressive enhancement por encima de un sistema de grillas complejo.
+- **Espaciado entre secciones:** 90–128px (`py-28` a `py-32` en Tailwind), para un ritmo donde cada sección se siente como una escena aislada.
+- **Espaciado interno:** denso (16–24px, `p-4` a `p-6`) dentro de cada sección, generando bloques de información concentrados.
+- **Separación por borde, no por sombra:** usar `border` para delimitar tarjetas y paneles en vez de `box-shadow`.
+- **Grid tipo "bento"** para secciones de features: tarjetas de tamaños desiguales con bordes de acento sutil.
+- **Breakpoint principal:** 600px (`sm:`), priorizando mobile-first.
 
 ---
 
 ## 4. Elemento de firma (signature)
 
-El **glow púrpura del hero**: el titular principal se renderiza en `text-primary`, pero una palabra o frase clave se resalta con `brand-purple` y un `text-shadow`/gradiente radial suave detrás, simulando el efecto de una terminal iluminada en un cuarto oscuro. Este mismo glow reaparece de forma contenida en el borde superior de las tarjetas activas y en el CTA principal — es el único lugar donde el color "brilla" en vez de solo pintar.
+El **glow azul del hero**: el titular principal se renderiza en `text-primary`, pero una palabra o frase clave se resalta con `text-primary` y un `text-shadow` sutil en dark mode, simulando el efecto de una terminal iluminada. Este mismo glow reaparece de forma contenida en el borde superior de las tarjetas activas y en el CTA principal.
 
 ---
 
 ## 5. Notas de uso rápido
 
-- CTA primario → fondo `brand-purple`, texto `#FAFAFA`, peso 500.
-- CTA secundario (ghost) → borde `border-subtle`, texto `text-secondary`, hover a `brand-purple-light`.
-- Links de navegación → `text-secondary` en reposo, `text-primary` + `brand-purple-light` underline en hover.
-- Código inline → fondo `surface-elevated`, texto en `brand-purple-light`, fuente monoespaciada.
+- CTA primario → fondo `bg-primary`, texto `text-primary-foreground`, peso 500.
+- CTA secundario (ghost/outline) → borde `border-border`, texto `text-muted-foreground`, hover a `text-primary`.
+- Links de navegación → `text-muted-foreground` en reposo, `text-foreground` + underline en hover.
+- Tarjetas → `border border-border/30 bg-card` sin `shadow`.
+- Inputs → `border border-input/50 bg-transparent`, focus con `ring-1 ring-ring`.

@@ -101,7 +101,7 @@ export function LoginForm() {
       <CardFooter className="flex justify-center">
         <p className="text-sm text-muted-foreground">
           No tienes cuenta?{" "}
-          <Link to="/auth/register" className="font-medium text-primary underline">
+          <Link to="/auth/register" className="font-medium text-primary underline hover:opacity-80">
             Registrate
           </Link>
         </p>

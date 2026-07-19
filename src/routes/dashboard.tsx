@@ -3,17 +3,13 @@ import { useState } from "react";
 import { Menu } from "lucide-react";
 
 import { Sidebar } from "@/components/layout/sidebar";
-import { getSession } from "@/api/auth.api";
+import { authClient } from "@/lib/auth-client";
 
 export const Route = createFileRoute("/dashboard")({
   component: DashboardLayout,
   beforeLoad: async () => {
-    try {
-      const data = await getSession();
-      if (!data) {
-        throw redirect({ to: "/auth/login" });
-      }
-    } catch {
+    const { data } = await authClient.getSession();
+    if (!data) {
       throw redirect({ to: "/auth/login" });
     }
   },
@@ -40,7 +36,7 @@ function DashboardLayout() {
         <div className="mb-6 flex items-center gap-3 md:hidden">
           <button
             onClick={() => setMobileOpen(true)}
-            className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+            className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer"
           >
             <Menu className="h-5 w-5" />
           </button>
