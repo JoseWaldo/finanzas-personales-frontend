@@ -16,6 +16,7 @@ import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardPresupuestosRouteImport } from './routes/dashboard/presupuestos'
 import { Route as DashboardIngresosRouteImport } from './routes/dashboard/ingresos'
 import { Route as DashboardGastosRouteImport } from './routes/dashboard/gastos'
+import { Route as DashboardCategoriasRouteImport } from './routes/dashboard/categorias'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 
@@ -54,6 +55,11 @@ const DashboardGastosRoute = DashboardGastosRouteImport.update({
   path: '/gastos',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardCategoriasRoute = DashboardCategoriasRouteImport.update({
+  id: '/categorias',
+  path: '/categorias',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const AuthRegisterRoute = AuthRegisterRouteImport.update({
   id: '/register',
   path: '/register',
@@ -71,6 +77,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/dashboard/categorias': typeof DashboardCategoriasRoute
   '/dashboard/gastos': typeof DashboardGastosRoute
   '/dashboard/ingresos': typeof DashboardIngresosRoute
   '/dashboard/presupuestos': typeof DashboardPresupuestosRoute
@@ -81,6 +88,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/dashboard/categorias': typeof DashboardCategoriasRoute
   '/dashboard/gastos': typeof DashboardGastosRoute
   '/dashboard/ingresos': typeof DashboardIngresosRoute
   '/dashboard/presupuestos': typeof DashboardPresupuestosRoute
@@ -93,6 +101,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
+  '/dashboard/categorias': typeof DashboardCategoriasRoute
   '/dashboard/gastos': typeof DashboardGastosRoute
   '/dashboard/ingresos': typeof DashboardIngresosRoute
   '/dashboard/presupuestos': typeof DashboardPresupuestosRoute
@@ -106,6 +115,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/auth/login'
     | '/auth/register'
+    | '/dashboard/categorias'
     | '/dashboard/gastos'
     | '/dashboard/ingresos'
     | '/dashboard/presupuestos'
@@ -116,6 +126,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/auth/login'
     | '/auth/register'
+    | '/dashboard/categorias'
     | '/dashboard/gastos'
     | '/dashboard/ingresos'
     | '/dashboard/presupuestos'
@@ -127,6 +138,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/auth/login'
     | '/auth/register'
+    | '/dashboard/categorias'
     | '/dashboard/gastos'
     | '/dashboard/ingresos'
     | '/dashboard/presupuestos'
@@ -190,6 +202,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardGastosRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/categorias': {
+      id: '/dashboard/categorias'
+      path: '/categorias'
+      fullPath: '/dashboard/categorias'
+      preLoaderRoute: typeof DashboardCategoriasRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/auth/register': {
       id: '/auth/register'
       path: '/register'
@@ -220,6 +239,7 @@ const AuthRouteChildren: AuthRouteChildren = {
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface DashboardRouteChildren {
+  DashboardCategoriasRoute: typeof DashboardCategoriasRoute
   DashboardGastosRoute: typeof DashboardGastosRoute
   DashboardIngresosRoute: typeof DashboardIngresosRoute
   DashboardPresupuestosRoute: typeof DashboardPresupuestosRoute
@@ -227,6 +247,7 @@ interface DashboardRouteChildren {
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardCategoriasRoute: DashboardCategoriasRoute,
   DashboardGastosRoute: DashboardGastosRoute,
   DashboardIngresosRoute: DashboardIngresosRoute,
   DashboardPresupuestosRoute: DashboardPresupuestosRoute,
