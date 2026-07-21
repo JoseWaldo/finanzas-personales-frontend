@@ -5,6 +5,7 @@ import { Plus, Repeat, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SubscriptionCard } from "@/features/subscriptions/components/subscription-card";
+import { SubscriptionCardSkeleton } from "@/features/subscriptions/components/subscription-card-skeleton";
 import { SubscriptionDialog } from "@/features/subscriptions/components/subscription-dialog";
 import { ReportPaymentDialog } from "@/features/subscriptions/components/report-payment-dialog";
 import {
@@ -184,7 +185,7 @@ function SuscripcionesPage() {
       )}
 
       {isLoading ? (
-        <div className="py-12 text-center text-sm text-muted-foreground">Cargando...</div>
+        <SubscriptionCardSkeleton />
       ) : subscriptions.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16 text-center text-muted-foreground">
           <Repeat className="mb-3 h-12 w-12 opacity-20" />

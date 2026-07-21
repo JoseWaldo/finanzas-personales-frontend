@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { TransactionForm } from "@/features/transactions/components/transaction-form";
 import { TransactionsTable } from "@/features/transactions/components/transactions-table";
+import { TransactionsTableSkeleton } from "@/features/transactions/components/transactions-table-skeleton";
 import { DeleteTransactionDialog } from "@/features/transactions/components/delete-transaction-dialog";
 import { Dialog } from "@/features/categories/components/category-dialog";
 import {
@@ -149,7 +150,7 @@ function GastosPage() {
         </CardHeader>
         <CardContent>
           {isLoading ? (
-            <div className="py-12 text-center text-sm text-muted-foreground">Cargando...</div>
+            <TransactionsTableSkeleton />
           ) : (
             <TransactionsTable
               transactions={transactions}

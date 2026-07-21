@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CategoriesTable } from "@/features/categories/components/categories-table";
+import { CategoriesTableSkeleton } from "@/features/categories/components/categories-table-skeleton";
 import { CategoryForm } from "@/features/categories/components/category-form";
 import { DeleteCategoryDialog } from "@/features/categories/components/delete-category-dialog";
 import { Dialog } from "@/features/categories/components/category-dialog";
@@ -160,9 +161,7 @@ function CategoriasPage() {
         </CardHeader>
         <CardContent className="p-0">
           {isLoading ? (
-            <div className="flex items-center justify-center py-16">
-              <div className="h-5 w-5 animate-spin rounded-full border-2 border-muted-foreground/30 border-t-muted-foreground" />
-            </div>
+            <CategoriesTableSkeleton />
           ) : (
             <CategoriesTable
               categories={categories}

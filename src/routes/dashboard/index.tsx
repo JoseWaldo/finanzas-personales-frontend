@@ -3,6 +3,7 @@ import { ArrowDownRight, ArrowUpRight, DollarSign, Wallet, Repeat } from "lucide
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/use-auth";
 import { cn } from "@/lib/utils";
 import { formatDateCol, formatCurrencyCOP } from "@/lib/date-utils";
@@ -150,7 +151,20 @@ function DashboardIndex() {
           </CardHeader>
           <CardContent>
             {summaryLoading ? (
-              <div className="py-12 text-center text-sm text-muted-foreground">Cargando...</div>
+              <div className="space-y-1">
+                {Array.from({ length: 5 }, (_, i) => (
+                  <div key={i} className="flex items-center rounded-lg p-2">
+                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                      <Skeleton className="h-8 w-8 shrink-0 rounded-lg" />
+                      <div className="min-w-0 flex-1">
+                        <Skeleton className="h-4 w-36" />
+                        <Skeleton className="mt-1 h-3 w-24" />
+                      </div>
+                    </div>
+                    <Skeleton className="h-4 w-16 shrink-0" />
+                  </div>
+                ))}
+              </div>
             ) : !summary || summary.recentTransactions.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground">
                 <DollarSign className="mb-3 h-10 w-10 opacity-30" />
