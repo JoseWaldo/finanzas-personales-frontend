@@ -105,7 +105,9 @@ export function SubscriptionDialog({ open, onClose, defaultValues, onSubmit, isL
   const handleCreateTag = async () => {
     if (!newTagName.trim()) return;
     try {
-      await createTag.mutateAsync({ name: newTagName.trim(), color: newTagColor });
+      const created = await createTag.mutateAsync({ name: newTagName.trim(), color: newTagColor });
+      const current = form.getValues("tagIds") ?? [];
+      form.setValue("tagIds", [...current, created.id]);
       setNewTagName("");
       setShowNewTag(false);
     } catch {
@@ -231,9 +233,9 @@ export function SubscriptionDialog({ open, onClose, defaultValues, onSubmit, isL
             />
 
             <div>
-              <FormLabel className="mb-2 block">Tags</FormLabel>
+              <FormLabel className="mb-3 block">Tags</FormLabel>
               <input type="hidden" {...form.register("tagIds")} />
-              <div className="flex flex-wrap gap-1.5 mb-2">
+              <div className="flex flex-wrap gap-2 mb-3">
                 {tags?.map((tag) => {
                   const selected = form.watch("tagIds")?.includes(tag.id);
                   return (
@@ -266,22 +268,22 @@ export function SubscriptionDialog({ open, onClose, defaultValues, onSubmit, isL
               </div>
 
               {showNewTag ? (
-                <div className="flex items-end gap-2">
-                  <div className="flex-1 space-y-1">
+                <div className="flex items-end gap-3 mt-2">
+                  <div className="flex-1 space-y-2">
                     <Input
                       placeholder="Nombre del tag"
                       value={newTagName}
                       onChange={(e) => setNewTagName(e.target.value)}
-                      className="h-8 text-sm"
+                      className="h-9 text-sm"
                     />
-                    <div className="flex gap-1">
+                    <div className="flex gap-1.5">
                       {PRESET_COLORS.map((c) => (
                         <button
                           key={c}
                           type="button"
                           onClick={() => setNewTagColor(c)}
                           className={cn(
-                            "h-5 w-5 rounded-full border-2 cursor-pointer",
+                            "h-6 w-6 rounded-full border-2 cursor-pointer",
                             c === newTagColor ? "border-foreground" : "border-transparent"
                           )}
                           style={{ backgroundColor: c }}
@@ -292,7 +294,7 @@ export function SubscriptionDialog({ open, onClose, defaultValues, onSubmit, isL
                   <Button
                     type="button"
                     size="sm"
-                    className="h-8 shrink-0 cursor-pointer"
+                    className="h-9 shrink-0 cursor-pointer"
                     onClick={handleCreateTag}
                     disabled={!newTagName.trim() || createTag.isPending}
                   >

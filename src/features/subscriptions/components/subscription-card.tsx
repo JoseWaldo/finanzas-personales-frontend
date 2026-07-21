@@ -51,14 +51,14 @@ export function SubscriptionCard({ subscription, onEdit, onDelete, onReport }: S
           {menuOpen && (
             <>
               <div className="fixed inset-0 z-10" onClick={() => setMenuOpen(false)} />
-              <div className="absolute right-0 z-20 mt-1 w-36 rounded-lg border border-border/30 bg-card p-1 shadow-lg">
+              <div className="absolute right-0 z-20 mt-1 min-w-36 max-w-48 rounded-lg border border-border/30 bg-card p-1 shadow-lg">
                 <button
                   type="button"
                   onClick={() => { setMenuOpen(false); onEdit(subscription); }}
                   className="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-sm hover:bg-accent cursor-pointer"
                 >
-                  <Edit className="h-3.5 w-3.5" />
-                  Editar
+                  <Edit className="h-3.5 w-3.5 shrink-0" />
+                  <span className="truncate">Editar</span>
                 </button>
                 {subscription.status === "ACTIVE" && (
                   <button
@@ -66,8 +66,8 @@ export function SubscriptionCard({ subscription, onEdit, onDelete, onReport }: S
                     onClick={() => { setMenuOpen(false); onReport(subscription); }}
                     className="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-sm text-chart-2 hover:bg-accent cursor-pointer"
                   >
-                    <CreditCard className="h-3.5 w-3.5" />
-                    Reportar pago
+                    <CreditCard className="h-3.5 w-3.5 shrink-0" />
+                    <span className="truncate">Reportar pago</span>
                   </button>
                 )}
                 {subscription.status !== "CANCELLED" && (
@@ -76,8 +76,8 @@ export function SubscriptionCard({ subscription, onEdit, onDelete, onReport }: S
                     onClick={() => { setMenuOpen(false); onDelete(subscription.id); }}
                     className="flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-sm text-chart-4 hover:bg-accent cursor-pointer"
                   >
-                    <Trash2 className="h-3.5 w-3.5" />
-                    Eliminar
+                    <Trash2 className="h-3.5 w-3.5 shrink-0" />
+                    <span className="truncate">Eliminar</span>
                   </button>
                 )}
               </div>
