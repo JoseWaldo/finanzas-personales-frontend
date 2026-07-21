@@ -43,6 +43,14 @@ export function useAuth() {
     await authClient.signOut();
   }, []);
 
+  const updateProfile = useCallback(async (name: string) => {
+    const result = await authClient.updateUser({ name });
+    if (result.error) {
+      throw new Error(result.error.message ?? "Error al actualizar el perfil");
+    }
+    return result.data;
+  }, []);
+
   return {
     user,
     session,
@@ -52,5 +60,6 @@ export function useAuth() {
     login,
     register,
     logout,
+    updateProfile,
   };
 }

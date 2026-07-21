@@ -1,8 +1,7 @@
 import { Link, useLocation, useRouter } from "@tanstack/react-router";
-import { LayoutDashboard, Wallet, TrendingDown, Repeat, Tags, LogOut, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { LayoutDashboard, Wallet, TrendingDown, Repeat, Tags, LogOut, ChevronLeft, ChevronRight, X, UserRound } from "lucide-react";
 
 import { AppLogo } from "@/components/shared/app-logo";
-import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { useAuth } from "@/hooks/use-auth";
 import { cn } from "@/lib/utils";
 
@@ -33,6 +32,11 @@ const navItems = [
     icon: Tags,
     label: "Categorias",
   },
+  {
+    to: "/dashboard/perfil",
+    icon: UserRound,
+    label: "Perfil",
+  },
 ];
 
 interface SidebarProps {
@@ -44,7 +48,7 @@ interface SidebarProps {
 
 export function Sidebar({ collapsed, mobileOpen, onToggle, onMobileClose }: SidebarProps) {
   const location = useLocation();
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
   const router = useRouter();
   const expanded = mobileOpen || !collapsed;
 
@@ -129,6 +133,21 @@ export function Sidebar({ collapsed, mobileOpen, onToggle, onMobileClose }: Side
         </nav>
 
         <div className="space-y-1 px-3 pb-4">
+          <div className={cn(
+            "flex items-center gap-3 rounded-lg px-3 py-2",
+            !expanded && "justify-center px-2",
+          )}>
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-sidebar-accent text-sidebar-accent-foreground text-sm font-medium">
+              {user?.name ? user.name.charAt(0).toUpperCase() : <UserRound className="h-4 w-4" />}
+            </div>
+            {expanded && (
+              <div className="overflow-hidden">
+                <p className="truncate text-sm font-medium text-sidebar-foreground">
+                  {user?.name ?? "Usuario"}
+                </p>
+              </div>
+            )}
+          </div>
           <button
             onClick={handleLogout}
             className={cn(
@@ -139,9 +158,6 @@ export function Sidebar({ collapsed, mobileOpen, onToggle, onMobileClose }: Side
             <LogOut className="h-5 w-5 shrink-0" />
             {expanded && <span>Salir</span>}
           </button>
-          <div className={cn("flex", !expanded && "justify-center")}>
-            <ThemeToggle />
-          </div>
         </div>
       </aside>
     </>
