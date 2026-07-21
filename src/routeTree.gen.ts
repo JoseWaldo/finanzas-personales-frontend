@@ -13,7 +13,7 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
-import { Route as DashboardPresupuestosRouteImport } from './routes/dashboard/presupuestos'
+import { Route as DashboardSuscripcionesRouteImport } from './routes/dashboard/suscripciones'
 import { Route as DashboardIngresosRouteImport } from './routes/dashboard/ingresos'
 import { Route as DashboardGastosRouteImport } from './routes/dashboard/gastos'
 import { Route as DashboardCategoriasRouteImport } from './routes/dashboard/categorias'
@@ -40,9 +40,9 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DashboardRoute,
 } as any)
-const DashboardPresupuestosRoute = DashboardPresupuestosRouteImport.update({
-  id: '/presupuestos',
-  path: '/presupuestos',
+const DashboardSuscripcionesRoute = DashboardSuscripcionesRouteImport.update({
+  id: '/suscripciones',
+  path: '/suscripciones',
   getParentRoute: () => DashboardRoute,
 } as any)
 const DashboardIngresosRoute = DashboardIngresosRouteImport.update({
@@ -80,7 +80,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/categorias': typeof DashboardCategoriasRoute
   '/dashboard/gastos': typeof DashboardGastosRoute
   '/dashboard/ingresos': typeof DashboardIngresosRoute
-  '/dashboard/presupuestos': typeof DashboardPresupuestosRoute
+  '/dashboard/suscripciones': typeof DashboardSuscripcionesRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRoutesByTo {
@@ -91,7 +91,7 @@ export interface FileRoutesByTo {
   '/dashboard/categorias': typeof DashboardCategoriasRoute
   '/dashboard/gastos': typeof DashboardGastosRoute
   '/dashboard/ingresos': typeof DashboardIngresosRoute
-  '/dashboard/presupuestos': typeof DashboardPresupuestosRoute
+  '/dashboard/suscripciones': typeof DashboardSuscripcionesRoute
   '/dashboard': typeof DashboardIndexRoute
 }
 export interface FileRoutesById {
@@ -104,7 +104,7 @@ export interface FileRoutesById {
   '/dashboard/categorias': typeof DashboardCategoriasRoute
   '/dashboard/gastos': typeof DashboardGastosRoute
   '/dashboard/ingresos': typeof DashboardIngresosRoute
-  '/dashboard/presupuestos': typeof DashboardPresupuestosRoute
+  '/dashboard/suscripciones': typeof DashboardSuscripcionesRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRouteTypes {
@@ -118,7 +118,7 @@ export interface FileRouteTypes {
     | '/dashboard/categorias'
     | '/dashboard/gastos'
     | '/dashboard/ingresos'
-    | '/dashboard/presupuestos'
+    | '/dashboard/suscripciones'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -129,7 +129,7 @@ export interface FileRouteTypes {
     | '/dashboard/categorias'
     | '/dashboard/gastos'
     | '/dashboard/ingresos'
-    | '/dashboard/presupuestos'
+    | '/dashboard/suscripciones'
     | '/dashboard'
   id:
     | '__root__'
@@ -141,7 +141,7 @@ export interface FileRouteTypes {
     | '/dashboard/categorias'
     | '/dashboard/gastos'
     | '/dashboard/ingresos'
-    | '/dashboard/presupuestos'
+    | '/dashboard/suscripciones'
     | '/dashboard/'
   fileRoutesById: FileRoutesById
 }
@@ -181,11 +181,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardIndexRouteImport
       parentRoute: typeof DashboardRoute
     }
-    '/dashboard/presupuestos': {
-      id: '/dashboard/presupuestos'
-      path: '/presupuestos'
-      fullPath: '/dashboard/presupuestos'
-      preLoaderRoute: typeof DashboardPresupuestosRouteImport
+    '/dashboard/suscripciones': {
+      id: '/dashboard/suscripciones'
+      path: '/suscripciones'
+      fullPath: '/dashboard/suscripciones'
+      preLoaderRoute: typeof DashboardSuscripcionesRouteImport
       parentRoute: typeof DashboardRoute
     }
     '/dashboard/ingresos': {
@@ -242,7 +242,7 @@ interface DashboardRouteChildren {
   DashboardCategoriasRoute: typeof DashboardCategoriasRoute
   DashboardGastosRoute: typeof DashboardGastosRoute
   DashboardIngresosRoute: typeof DashboardIngresosRoute
-  DashboardPresupuestosRoute: typeof DashboardPresupuestosRoute
+  DashboardSuscripcionesRoute: typeof DashboardSuscripcionesRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
@@ -250,7 +250,7 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardCategoriasRoute: DashboardCategoriasRoute,
   DashboardGastosRoute: DashboardGastosRoute,
   DashboardIngresosRoute: DashboardIngresosRoute,
-  DashboardPresupuestosRoute: DashboardPresupuestosRoute,
+  DashboardSuscripcionesRoute: DashboardSuscripcionesRoute,
   DashboardIndexRoute: DashboardIndexRoute,
 }
 

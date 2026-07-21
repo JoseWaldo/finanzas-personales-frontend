@@ -1,5 +1,5 @@
 import { Link, useLocation, useRouter } from "@tanstack/react-router";
-import { LayoutDashboard, Wallet, TrendingDown, PiggyBank, Tags, LogOut, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { LayoutDashboard, Wallet, TrendingDown, Repeat, Tags, LogOut, ChevronLeft, ChevronRight, X } from "lucide-react";
 
 import { AppLogo } from "@/components/shared/app-logo";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
@@ -24,9 +24,9 @@ const navItems = [
     label: "Gastos",
   },
   {
-    to: "/dashboard/presupuestos",
-    icon: PiggyBank,
-    label: "Presupuestos",
+    to: "/dashboard/suscripciones",
+    icon: Repeat,
+    label: "Suscripciones",
   },
   {
     to: "/dashboard/categorias",

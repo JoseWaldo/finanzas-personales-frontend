@@ -1,5 +1,5 @@
 import { createFileRoute, redirect, Link } from "@tanstack/react-router";
-import { ArrowRight, BarChart3, PiggyBank, Wallet } from "lucide-react";
+import { ArrowRight, BarChart3, Repeat, Wallet } from "lucide-react";
 
 import { AppLogo } from "@/components/shared/app-logo";
 import { Button } from "@/components/ui/button";
@@ -24,9 +24,9 @@ const features = [
     large: true,
   },
   {
-    icon: PiggyBank,
-    title: "Presupuestos inteligentes",
-    description: "Define metas de ahorro y controla tus gastos por categoria.",
+    icon: Repeat,
+    title: "Control de suscripciones",
+    description: "Gestiona tus suscripciones recurrentes, recibe recordatorios y registra sus pagos.",
   },
   {
     icon: BarChart3,
