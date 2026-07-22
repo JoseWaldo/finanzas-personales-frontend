@@ -166,7 +166,7 @@ export function CategoriesTable({
 
   return (
     <div>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto max-w-[calc(100vw-2rem)] md:max-w-none">
         <table className="w-full">
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -207,7 +207,7 @@ export function CategoriesTable({
       )}
 
       {totalPages > 1 && (
-        <div className="flex items-center justify-between border-t border-border/30 px-4 py-3">
+        <div className="flex flex-col gap-2 border-t border-border/30 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-muted-foreground">
             {total} categoria{total !== 1 ? "s" : ""} — Página {page} de {totalPages}
           </p>
