@@ -124,3 +124,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
+
+option {
+  background-color: var(--card);
+  color: var(--card-foreground);
+}

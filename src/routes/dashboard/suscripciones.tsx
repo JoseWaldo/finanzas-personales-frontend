@@ -8,6 +8,7 @@ import { SubscriptionCard } from "@/features/subscriptions/components/subscripti
 import { SubscriptionCardSkeleton } from "@/features/subscriptions/components/subscription-card-skeleton";
 import { SubscriptionDialog } from "@/features/subscriptions/components/subscription-dialog";
 import { ReportPaymentDialog } from "@/features/subscriptions/components/report-payment-dialog";
+import { PaymentMethodDetailModal } from "@/features/subscriptions/components/payment-method-detail-modal";
 import {
   useSubscriptions,
   useTags,
@@ -19,6 +20,7 @@ import {
 import type {
   Subscription,
   SubscriptionFormInput,
+  SubscriptionFormaPago,
 } from "@/features/subscriptions/schemas/subscription.schema";
 import { cn } from "@/lib/utils";
 
@@ -41,6 +43,7 @@ function SuscripcionesPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingSubscription, setEditingSubscription] = useState<Subscription | null>(null);
   const [reportingSubscription, setReportingSubscription] = useState<Subscription | null>(null);
+  const [detailFormaPago, setDetailFormaPago] = useState<SubscriptionFormaPago | null>(null);
 
   const { data, isLoading } = useSubscriptions({
     status: statusFilter,
@@ -70,6 +73,7 @@ function SuscripcionesPage() {
       nextPaymentDate: data.nextPaymentDate,
       frequency: data.frequency,
       status: data.status,
+      formaPagoId: data.formaPagoId,
       tagIds: data.tagIds,
     });
     setDialogOpen(false);
@@ -85,6 +89,7 @@ function SuscripcionesPage() {
         nextPaymentDate: data.nextPaymentDate,
         frequency: data.frequency,
         status: data.status,
+        formaPagoId: data.formaPagoId,
         tagIds: data.tagIds,
       },
     });
@@ -212,6 +217,7 @@ function SuscripcionesPage() {
               onEdit={openEdit}
               onDelete={handleDelete}
               onReport={setReportingSubscription}
+              onViewPaymentMethod={setDetailFormaPago}
             />
           ))}
         </div>
@@ -238,6 +244,12 @@ function SuscripcionesPage() {
         subscription={reportingSubscription}
         onSubmit={handleReport}
         isLoading={reportPayment.isPending}
+      />
+
+      <PaymentMethodDetailModal
+        open={detailFormaPago !== null}
+        onClose={() => setDetailFormaPago(null)}
+        formaPago={detailFormaPago}
       />
     </div>
   );

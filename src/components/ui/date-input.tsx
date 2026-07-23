@@ -1,7 +1,7 @@
 import * as React from "react";
 import { format, getDaysInMonth, getDay, startOfMonth } from "date-fns";
 import { TZDate } from "@date-fns/tz";
-import { Calendar, ChevronLeft, ChevronRight } from "lucide-react";
+import { Calendar, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { COLOMBIA_TZ, parseDateCol, todayCol, formatDateCol } from "@/lib/date-utils";
 
@@ -38,6 +38,11 @@ const DateInput = React.forwardRef<HTMLDivElement, DateInputProps>(
     const [popoverOpen, setPopoverOpen] = React.useState(false);
     const [typedValue, setTypedValue] = React.useState("");
     const isTyping = typedValue !== "";
+    const wrapperRef = React.useRef<HTMLDivElement>(null);
+    const [popupStyle, setPopupStyle] = React.useState<React.CSSProperties>({
+      position: "fixed",
+      visibility: "hidden",
+    });
 
     const selectedDate = value ? parseDateCol(value) : null;
 
@@ -50,6 +55,55 @@ const DateInput = React.forwardRef<HTMLDivElement, DateInputProps>(
         setViewDate(selectedDate);
       }
     }, [value, popoverOpen]);
+
+    const computePosition = React.useCallback(() => {
+      if (!wrapperRef.current) return {};
+
+      const rect = wrapperRef.current.getBoundingClientRect();
+      const estimatedHeight = 300;
+      const gap = 4;
+      const spaceBelow = window.innerHeight - rect.bottom - gap;
+      const spaceAbove = rect.top - gap;
+      const upwards = spaceBelow < estimatedHeight && spaceAbove > spaceBelow;
+
+      const popoverWidth = Math.min(256, window.innerWidth - 16);
+      let left = rect.left;
+      if (left + popoverWidth > window.innerWidth - 8) {
+        left = window.innerWidth - popoverWidth - 8;
+      }
+      if (left < 8) left = 8;
+
+      return {
+        position: "fixed" as const,
+        top: upwards ? rect.top - gap : rect.bottom + gap,
+        left,
+        zIndex: 60,
+        width: popoverWidth,
+        visibility: "visible" as const,
+      };
+    }, []);
+
+    React.useLayoutEffect(() => {
+      if (!popoverOpen || !wrapperRef.current) return;
+
+      const updatePosition = () => {
+        setPopupStyle(computePosition());
+      };
+
+      window.addEventListener("scroll", updatePosition, true);
+      window.addEventListener("resize", updatePosition);
+
+      return () => {
+        window.removeEventListener("scroll", updatePosition, true);
+        window.removeEventListener("resize", updatePosition);
+      };
+    }, [popoverOpen, computePosition]);
+
+    const handleOpen = React.useCallback(() => {
+      if (!wrapperRef.current) return;
+      setPopupStyle(computePosition());
+      setPopoverOpen(true);
+    }, [computePosition]);
 
     const handleTypedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const raw = e.target.value;
@@ -82,6 +136,12 @@ const DateInput = React.forwardRef<HTMLDivElement, DateInputProps>(
       setViewDate(d);
     };
 
+    const goYear = (delta: number) => {
+      const d = new TZDate(viewDate, COLOMBIA_TZ);
+      d.setFullYear(viewDate.getFullYear() + delta);
+      setViewDate(d);
+    };
+
     const daysInMonth = getDaysInMonth(viewDate);
     const firstDayOfWeek = getDay(startOfMonth(viewDate));
 
@@ -93,7 +153,7 @@ const DateInput = React.forwardRef<HTMLDivElement, DateInputProps>(
 
     return (
       <div ref={ref} className={cn("relative", className)}>
-        <div className="relative">
+        <div ref={wrapperRef} className="relative">
           <Calendar className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none" />
           <input
             type="text"
@@ -102,32 +162,53 @@ const DateInput = React.forwardRef<HTMLDivElement, DateInputProps>(
             value={displayValue}
             onChange={handleTypedChange}
             onBlur={handleTypedBlur}
-            onFocus={() => setPopoverOpen(true)}
+            onFocus={handleOpen}
           />
         </div>
 
         {popoverOpen && (
           <>
-            <div className="fixed inset-0 z-40" onClick={() => setPopoverOpen(false)} />
-            <div className="absolute left-0 top-full z-50 mt-1 w-64 rounded-lg border border-border/30 bg-card p-3 shadow-lg">
+            <div className="fixed inset-0 z-[55]" onClick={() => setPopoverOpen(false)} />
+            <div
+              style={popupStyle}
+              className="rounded-lg border border-border/30 bg-card p-3 shadow-lg"
+            >
               <div className="mb-2 flex items-center justify-between">
-                <button
-                  type="button"
-                  onClick={() => goMonth(-1)}
-                  className="flex h-7 w-7 items-center justify-center rounded-md hover:bg-accent cursor-pointer"
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                </button>
+                <div className="flex items-center gap-0.5">
+                  <button
+                    type="button"
+                    onClick={() => goYear(-1)}
+                    className="flex h-6 w-6 items-center justify-center rounded-md hover:bg-accent cursor-pointer"
+                  >
+                    <ChevronsLeft className="h-3.5 w-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => goMonth(-1)}
+                    className="flex h-6 w-6 items-center justify-center rounded-md hover:bg-accent cursor-pointer"
+                  >
+                    <ChevronLeft className="h-3.5 w-3.5" />
+                  </button>
+                </div>
                 <span className="text-sm font-medium">
                   {MONTH_NAMES[viewDate.getMonth()]} {viewDate.getFullYear()}
                 </span>
-                <button
-                  type="button"
-                  onClick={() => goMonth(1)}
-                  className="flex h-7 w-7 items-center justify-center rounded-md hover:bg-accent cursor-pointer"
-                >
-                  <ChevronRight className="h-4 w-4" />
-                </button>
+                <div className="flex items-center gap-0.5">
+                  <button
+                    type="button"
+                    onClick={() => goMonth(1)}
+                    className="flex h-6 w-6 items-center justify-center rounded-md hover:bg-accent cursor-pointer"
+                  >
+                    <ChevronRight className="h-3.5 w-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => goYear(1)}
+                    className="flex h-6 w-6 items-center justify-center rounded-md hover:bg-accent cursor-pointer"
+                  >
+                    <ChevronsRight className="h-3.5 w-3.5" />
+                  </button>
+                </div>
               </div>
 
               <div className="grid grid-cols-7 gap-0.5 mb-1">

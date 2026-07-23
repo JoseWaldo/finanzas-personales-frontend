@@ -1,4 +1,4 @@
-import { Calendar, CreditCard, Edit, MoreHorizontal, Trash2 } from "lucide-react";
+import { Calendar, CreditCard, Edit, MoreHorizontal, Trash2, ChevronRight } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -25,11 +25,14 @@ interface SubscriptionCardProps {
   onEdit: (subscription: Subscription) => void;
   onDelete: (id: string) => void;
   onReport: (subscription: Subscription) => void;
+  onViewPaymentMethod: (formaPago: Subscription["formaPago"]) => void;
 }
 
-export function SubscriptionCard({ subscription, onEdit, onDelete, onReport }: SubscriptionCardProps) {
+export function SubscriptionCard({ subscription, onEdit, onDelete, onReport, onViewPaymentMethod }: SubscriptionCardProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const status = STATUS_CONFIG[subscription.status];
+  const fp = subscription.formaPago;
+  const entidadNombre = fp.entidadFinancieraNombre ?? fp.nombre;
 
   return (
     <div
@@ -101,6 +104,15 @@ export function SubscriptionCard({ subscription, onEdit, onDelete, onReport }: S
         <Calendar className="h-3.5 w-3.5 shrink-0" />
         <span>Próx. pago: {formatDateCol(subscription.nextPaymentDate, "dd MMM yyyy")}</span>
       </div>
+
+      <button
+        type="button"
+        onClick={() => onViewPaymentMethod(fp)}
+        className="mt-3 inline-flex cursor-pointer items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+      >
+        {entidadNombre}
+        <ChevronRight className="h-3 w-3 shrink-0" />
+      </button>
 
       {subscription.tags.length > 0 && (
         <div className="mt-3 flex flex-wrap gap-1.5">

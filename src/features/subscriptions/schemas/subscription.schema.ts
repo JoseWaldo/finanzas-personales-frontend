@@ -8,6 +8,7 @@ export const subscriptionFormSchema = z.object({
     message: "La frecuencia es requerida",
   }),
   status: z.enum(["ACTIVE", "PAUSED", "CANCELLED"]),
+  formaPagoId: z.string().min(1, "Selecciona una forma de pago"),
   tagIds: z.array(z.string()),
 });
 
@@ -29,6 +30,18 @@ export interface SubscriptionTag {
   updatedAt: string;
 }
 
+export interface SubscriptionFormaPago {
+  id: string;
+  nombre: string;
+  tipo: "CREDIT" | "DEBIT" | "CASH";
+  ultimosCuatro: string | null;
+  gradienteInicio: string;
+  gradienteFin: string;
+  formatoNumero: string | null;
+  entidadFinancieraId: string | null;
+  entidadFinancieraNombre: string | null;
+}
+
 export interface Subscription {
   id: string;
   name: string;
@@ -37,6 +50,7 @@ export interface Subscription {
   frequency: "MONTHLY" | "YEARLY" | "QUARTERLY" | "BIWEEKLY" | "WEEKLY";
   status: "ACTIVE" | "PAUSED" | "CANCELLED";
   userId: string;
+  formaPago: SubscriptionFormaPago;
   tags: SubscriptionTag[];
   createdAt: string;
   updatedAt: string;

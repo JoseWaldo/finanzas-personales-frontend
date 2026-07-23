@@ -4,6 +4,7 @@ import { Plus, Search } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { TransactionForm } from "@/features/transactions/components/transaction-form";
 import { TransactionsTable } from "@/features/transactions/components/transactions-table";
@@ -115,27 +116,25 @@ function GastosPage() {
               />
             </div>
             <div className="flex items-center gap-2">
-              <select
+              <Select
                 value={month}
                 onChange={(e) => {
                   setMonth(Number(e.target.value));
                   setPage(1);
                 }}
-                className="flex h-9 rounded-md border border-input/50 bg-transparent px-3 py-1 text-sm transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               >
                 {MONTHS.map((name, i) => (
                   <option key={i} value={i + 1}>
                     {name}
                   </option>
                 ))}
-              </select>
-              <select
+              </Select>
+              <Select
                 value={year}
                 onChange={(e) => {
                   setYear(Number(e.target.value));
                   setPage(1);
                 }}
-                className="flex h-9 rounded-md border border-input/50 bg-transparent px-3 py-1 text-sm transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
               >
                 {Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - 2 + i).map(
                   (y) => (
@@ -144,7 +143,7 @@ function GastosPage() {
                     </option>
                   )
                 )}
-              </select>
+              </Select>
             </div>
           </div>
         </CardHeader>

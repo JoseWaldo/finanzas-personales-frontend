@@ -45,7 +45,7 @@ export function ReportPaymentDialog({ open, onClose, subscription, onSubmit, isL
         if (e.target === overlayRef.current) onClose();
       }}
     >
-      <div className="w-full max-w-sm rounded-xl border border-border/30 bg-card p-6 shadow-lg">
+      <div className="w-[98%] max-w-sm max-h-[90vh] overflow-y-auto rounded-xl border border-border/30 bg-card p-6 shadow-lg sm:w-full">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-base font-medium">Reportar pago</h2>
           <button

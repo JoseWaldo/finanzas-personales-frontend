@@ -1,5 +1,5 @@
 import { Link, useLocation, useRouter } from "@tanstack/react-router";
-import { LayoutDashboard, Wallet, TrendingDown, Repeat, Tags, LogOut, ChevronLeft, ChevronRight, X, UserRound } from "lucide-react";
+import { LayoutDashboard, Wallet, TrendingDown, Building2, CreditCard, Repeat, Tags, LogOut, ChevronLeft, ChevronRight, X, UserRound } from "lucide-react";
 
 import { AppLogo } from "@/components/shared/app-logo";
 import { useAuth } from "@/hooks/use-auth";
@@ -16,11 +16,25 @@ const navItems = [
     to: "/dashboard/ingresos",
     icon: Wallet,
     label: "Ingresos",
+    group: "Finanzas",
   },
   {
     to: "/dashboard/gastos",
     icon: TrendingDown,
     label: "Gastos",
+    group: "Finanzas",
+  },
+  {
+    to: "/dashboard/entidades-financieras",
+    icon: Building2,
+    label: "Entidades financieras",
+    group: "Finanzas",
+  },
+  {
+    to: "/dashboard/formas-de-pago",
+    icon: CreditCard,
+    label: "Formas de pago",
+    group: "Finanzas",
   },
   {
     to: "/dashboard/suscripciones",
@@ -107,27 +121,35 @@ export function Sidebar({ collapsed, mobileOpen, onToggle, onMobileClose }: Side
         </button>
 
         <nav className="flex-1 space-y-1 px-3 py-2">
-          {navItems.map(({ to, icon: Icon, label, exact }) => {
+          {navItems.map(({ to, icon: Icon, label, exact, group }, index) => {
             const isActive = exact
               ? location.pathname === to
               : location.pathname.startsWith(to);
+            const prevGroup = index > 0 ? navItems[index - 1].group : undefined;
+            const showGroupLabel = group && group !== prevGroup && expanded;
 
             return (
-              <Link
-                key={to}
-                to={to}
-                onClick={onMobileClose}
-                className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                  isActive
-                    ? "bg-sidebar-primary text-sidebar-primary-foreground"
-                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                  !expanded && "justify-center px-2",
+              <div key={to}>
+                {showGroupLabel && (
+                  <div className="px-3 pt-4 pb-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    {group}
+                  </div>
                 )}
-              >
-                <Icon className="h-5 w-5 shrink-0" />
-                {expanded && <span>{label}</span>}
-              </Link>
+                <Link
+                  to={to}
+                  onClick={onMobileClose}
+                  className={cn(
+                    "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                    isActive
+                      ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                      : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                    !expanded && "justify-center px-2",
+                  )}
+                >
+                  <Icon className="h-5 w-5 shrink-0" />
+                  {expanded && <span>{label}</span>}
+                </Link>
+              </div>
             );
           })}
         </nav>

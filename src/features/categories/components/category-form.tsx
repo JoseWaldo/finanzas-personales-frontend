@@ -10,6 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
 import { IconPicker } from "@/features/categories/components/icon-picker";
 import {
   categoryFormSchema,
@@ -61,14 +62,13 @@ export function CategoryForm({ defaultValues, onSubmit, isLoading }: CategoryFor
             <FormItem>
               <FormLabel>Tipo</FormLabel>
               <FormControl>
-                <select
+                <Select
                   value={field.value}
                   onChange={field.onChange}
-                  className="flex h-9 w-full rounded-md border border-input/50 bg-transparent px-3 py-1 text-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 >
                   <option value="INCOME">Ingreso</option>
                   <option value="EXPENSE">Gasto</option>
-                </select>
+                </Select>
               </FormControl>
               <FormMessage />
             </FormItem>

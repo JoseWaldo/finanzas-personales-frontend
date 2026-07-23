@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { X, Plus } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { Link } from "@tanstack/react-router";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
 import { DateInput } from "@/components/ui/date-input";
 import { CurrencyInput } from "@/components/ui/currency-input";
 import {
@@ -21,6 +23,7 @@ import {
   type Subscription,
 } from "@/features/subscriptions/schemas/subscription.schema";
 import { useTags, useCreateTag } from "@/features/subscriptions/hooks/use-subscriptions";
+import { useFormasPago } from "@/features/formas-pago/hooks/use-formas-pago";
 import { cn } from "@/lib/utils";
 
 const FREQUENCIES = [
@@ -53,6 +56,7 @@ interface SubscriptionDialogProps {
 export function SubscriptionDialog({ open, onClose, defaultValues, onSubmit, isLoading }: SubscriptionDialogProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const { data: tags } = useTags();
+  const { data: formasPago } = useFormasPago({ page: 1, limit: 100 });
   const createTag = useCreateTag();
   const [showNewTag, setShowNewTag] = useState(false);
   const [newTagName, setNewTagName] = useState("");
@@ -85,6 +89,7 @@ export function SubscriptionDialog({ open, onClose, defaultValues, onSubmit, isL
         nextPaymentDate: defaultValues.nextPaymentDate.split("T")[0],
         frequency: defaultValues.frequency,
         status: defaultValues.status,
+        formaPagoId: defaultValues.formaPago?.id ?? "",
         tagIds: defaultValues.tags.map((t) => t.id),
       };
     }
@@ -94,6 +99,7 @@ export function SubscriptionDialog({ open, onClose, defaultValues, onSubmit, isL
       nextPaymentDate: new Date().toISOString().split("T")[0],
       frequency: "MONTHLY",
       status: "ACTIVE",
+      formaPagoId: "",
       tagIds: [],
     };
   }
@@ -117,6 +123,8 @@ export function SubscriptionDialog({ open, onClose, defaultValues, onSubmit, isL
 
   if (!open) return null;
 
+  const formattedFormasPago = formasPago?.data ?? [];
+
   return (
     <div
       ref={overlayRef}
@@ -125,7 +133,7 @@ export function SubscriptionDialog({ open, onClose, defaultValues, onSubmit, isL
         if (e.target === overlayRef.current) onClose();
       }}
     >
-      <div className="w-full max-w-md rounded-xl border border-border/30 bg-card p-6 shadow-lg max-h-[90vh] overflow-y-auto">
+      <div className="w-[98%] max-w-md max-h-[90vh] overflow-y-auto rounded-xl border border-border/30 bg-card p-6 shadow-lg sm:w-full">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-base font-medium">
             {defaultValues ? "Editar suscripcion" : "Nueva suscripcion"}
@@ -180,15 +188,14 @@ export function SubscriptionDialog({ open, onClose, defaultValues, onSubmit, isL
                   <FormItem>
                     <FormLabel>Frecuencia</FormLabel>
                     <FormControl>
-                      <select
+                      <Select
                         value={field.value}
                         onChange={field.onChange}
-                        className="flex h-9 w-full rounded-md border border-input/50 bg-transparent px-3 py-1 text-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                       >
                         {FREQUENCIES.map((f) => (
                           <option key={f.value} value={f.value}>{f.label}</option>
                         ))}
-                      </select>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -202,15 +209,14 @@ export function SubscriptionDialog({ open, onClose, defaultValues, onSubmit, isL
                   <FormItem>
                     <FormLabel>Estado</FormLabel>
                     <FormControl>
-                      <select
+                      <Select
                         value={field.value}
                         onChange={field.onChange}
-                        className="flex h-9 w-full rounded-md border border-input/50 bg-transparent px-3 py-1 text-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                       >
                         {STATUSES.map((s) => (
                           <option key={s.value} value={s.value}>{s.label}</option>
                         ))}
-                      </select>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -228,6 +234,35 @@ export function SubscriptionDialog({ open, onClose, defaultValues, onSubmit, isL
                     <DateInput value={field.value} onChange={field.onChange} />
                   </FormControl>
                   <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="formaPagoId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Forma de pago</FormLabel>
+                  <FormControl>
+                    <Select value={field.value} onChange={field.onChange}>
+                      <option value="">Selecciona una forma de pago...</option>
+                      {formattedFormasPago.map((fp) => (
+                        <option key={fp.id} value={fp.id}>
+                          {fp.nombre}{fp.ultimosCuatro ? ` (•••• ${fp.ultimosCuatro})` : ""}
+                        </option>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                  {formasPago && formattedFormasPago.length === 0 && (
+                    <p className="text-xs text-muted-foreground mt-1">
+                      No tienes formas de pago.{" "}
+                      <Link to="/dashboard/formas-de-pago" className="text-primary underline">
+                        Crea una aqui
+                      </Link>
+                    </p>
+                  )}
                 </FormItem>
               )}
             />

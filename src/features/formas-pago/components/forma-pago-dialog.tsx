@@ -2,7 +2,7 @@ import { X } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 
-interface DialogProps {
+interface FormaPagoDialogProps {
   open: boolean;
   onClose: () => void;
   title: string;
@@ -10,7 +10,7 @@ interface DialogProps {
   className?: string;
 }
 
-export function Dialog({ open, onClose, title, children, className }: DialogProps) {
+export function FormaPagoDialog({ open, onClose, title, children, className }: FormaPagoDialogProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

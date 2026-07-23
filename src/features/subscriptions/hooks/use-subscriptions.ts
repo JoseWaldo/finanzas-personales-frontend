@@ -92,6 +92,7 @@ function useCreateSubscription() {
       nextPaymentDate: string;
       frequency: string;
       status?: string;
+      formaPagoId: string;
       tagIds?: string[];
     }) => {
       return apiClient<Subscription>("/api/v1/subscriptions", {
@@ -120,6 +121,7 @@ function useUpdateSubscription() {
         nextPaymentDate?: string;
         frequency?: string;
         status?: string;
+        formaPagoId?: string;
         tagIds?: string[];
       };
     }) => {
