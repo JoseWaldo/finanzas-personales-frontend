@@ -1,4 +1,4 @@
-# Sistema de Diseño — Balanz
+# Sistema de Diseño — Sumly
 
 Sistema de diseño propio inspirado en la filosofía visual de Supabase (fondo oscuro, alto contraste, estética developer-first, separación por bordes) con una paleta azul de marca conservadora y profesional.
 
@@ -93,3 +93,97 @@ El **glow azul del hero**: el titular principal se renderiza en `text-primary`, 
 - Links de navegación → `text-muted-foreground` en reposo, `text-foreground` + underline en hover.
 - Tarjetas → `border border-border/30 bg-card` sin `shadow`.
 - Inputs → `border border-input/50 bg-transparent`, focus con `ring-1 ring-ring`.
+
+---
+
+## 6. Sidebar
+
+El sidebar es colapsable con dos estados en desktop: expandido (`w-60`) y colapsado (`w-16`, solo iconos). En mobile es un drawer/overlay que se despliega a ancho completo.
+
+### Estructura de navegación
+
+Los 8 items se organizan en 3 grupos lógicos separados por encabezados de sección. Perfil queda al final con un divider (`border-t`) que lo separa visualmente del resto.
+
+```
+Panel                              (sin grupo, siempre primero)
+──────────────────────────────────
+Movimientos
+  Ingresos
+  Gastos
+  Suscripciones
+──────────────────────────────────
+Configuración
+  Entidades financieras
+  Formas de pago
+  Categorías
+──────────────────────────────────
+Perfil                            (sin grupo, con divider superior)
+```
+
+### Comportamiento responsive
+
+| Estado | Mobile (`<md`) | Desktop (`md:`) |
+|---|---|---|
+| Sidebar cerrado | Oculto (`-translate-x-full`) | Colapsado (`w-16`, solo iconos) |
+| Sidebar abierto | Overlay (`translate-x-0`, `w-60`) con backdrop `bg-black/50` | Expandido (`w-60`, inline, empuja el contenido) |
+| Toggle | Botón hamburguesa (`Menu`) en el header | Botón flotante en el borde derecho del sidebar |
+
+### Tokens de sidebar
+
+| Token | Uso |
+|---|---|
+| `--sidebar` (`bg-sidebar`) | Fondo del sidebar |
+| `--sidebar-foreground` (`text-sidebar-foreground`) | Texto de items inactivos |
+| `--sidebar-primary` (`bg-sidebar-primary`) | Fondo del item activo |
+| `--sidebar-primary-foreground` (`text-sidebar-primary-foreground`) | Texto del item activo |
+| `--sidebar-accent` (`bg-sidebar-accent`) | Fondo hover de items |
+| `--sidebar-accent-foreground` (`text-sidebar-accent-foreground`) | Texto hover de items |
+
+### Encabezados de grupo
+
+- Tipografía: 11px, peso 600, uppercase, tracking-wider
+- Color: `text-muted-foreground`
+- Espaciado: `pt-4 pb-1 px-3`
+- Solo visibles cuando el sidebar está expandido
+
+### Sección inferior
+
+Avatar circular con inicial del usuario + nombre (truncado). Botón de logout con `LogOut` icon. Todo centrado cuando el sidebar está colapsado.
+
+---
+
+## 7. Tooltips
+
+Componente propio (`src/components/ui/tooltip.tsx`) sin dependencias externas. Se usa para mostrar el label de cada item del sidebar cuando está colapsado (solo iconos visibles).
+
+### Comportamiento
+
+| Atributo | Valor |
+|---|---|
+| Activación | Hover + focus (accesible por teclado) |
+| Delay de entrada | 200ms |
+| Transición | `opacity` + `translate-x` en 200ms (`transition-all duration-200`) |
+| Posición | Derecha del trigger (`left-full top-1/2 -translate-y-1/2 ml-2`) |
+| Z-index | `z-50` |
+| Interactividad | `pointer-events-none` (no bloquea clicks) |
+
+### Estilo
+
+- Fondo invertido: `bg-foreground text-background` (contraste máximo)
+- Borde: `border border-border/50`
+- Tipografía: 12px (`text-xs`), peso 400, sin salto de línea (`whitespace-nowrap`)
+- Padding: `px-2.5 py-1.5`
+- Radio: `rounded-md`
+- Sombra sutil: `shadow-sm`
+
+### Uso
+
+```tsx
+<Tooltip content="Panel">
+  <Link to="/dashboard">
+    <LayoutDashboard className="h-5 w-5" />
+  </Link>
+</Tooltip>
+```
+
+Envolver cualquier elemento interactivo cuyo significado no sea obvio sin texto. El tooltip siempre se renderiza pero solo aparece al hacer hover; en mobile el sidebar siempre está expandido al abrirse, por lo que los tooltips no interfieren.

@@ -14,8 +14,8 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["favicon.svg", "logo.svg", "apple-touch-icon-180x180.png"],
       manifest: {
-        name: "Balanz — Tus finanzas en equilibrio",
-        short_name: "Balanz",
+        name: "Sumly — Tus finanzas en equilibrio",
+        short_name: "Sumly",
         description: "Gestiona tus ingresos, gastos y presupuestos de forma simple.",
         theme_color: "#1354BE",
         background_color: "#ffffff",

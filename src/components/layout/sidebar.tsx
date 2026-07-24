@@ -2,6 +2,7 @@ import { Link, useLocation, useRouter } from "@tanstack/react-router";
 import { LayoutDashboard, Wallet, TrendingDown, Building2, CreditCard, Repeat, Tags, LogOut, ChevronLeft, ChevronRight, X, UserRound } from "lucide-react";
 
 import { AppLogo } from "@/components/shared/app-logo";
+import { Tooltip } from "@/components/ui/tooltip";
 import { useAuth } from "@/hooks/use-auth";
 import { cn } from "@/lib/utils";
 
@@ -16,35 +17,37 @@ const navItems = [
     to: "/dashboard/ingresos",
     icon: Wallet,
     label: "Ingresos",
-    group: "Finanzas",
+    group: "Movimientos",
   },
   {
     to: "/dashboard/gastos",
     icon: TrendingDown,
     label: "Gastos",
-    group: "Finanzas",
-  },
-  {
-    to: "/dashboard/entidades-financieras",
-    icon: Building2,
-    label: "Entidades financieras",
-    group: "Finanzas",
-  },
-  {
-    to: "/dashboard/formas-de-pago",
-    icon: CreditCard,
-    label: "Formas de pago",
-    group: "Finanzas",
+    group: "Movimientos",
   },
   {
     to: "/dashboard/suscripciones",
     icon: Repeat,
     label: "Suscripciones",
+    group: "Movimientos",
+  },
+  {
+    to: "/dashboard/entidades-financieras",
+    icon: Building2,
+    label: "Entidades financieras",
+    group: "Configuración",
+  },
+  {
+    to: "/dashboard/formas-de-pago",
+    icon: CreditCard,
+    label: "Formas de pago",
+    group: "Configuración",
   },
   {
     to: "/dashboard/categorias",
     icon: Tags,
-    label: "Categorias",
+    label: "Categorías",
+    group: "Configuración",
   },
   {
     to: "/dashboard/perfil",
@@ -127,28 +130,34 @@ export function Sidebar({ collapsed, mobileOpen, onToggle, onMobileClose }: Side
               : location.pathname.startsWith(to);
             const prevGroup = index > 0 ? navItems[index - 1].group : undefined;
             const showGroupLabel = group && group !== prevGroup && expanded;
+            const showDivider = !group && prevGroup && expanded;
 
             return (
               <div key={to}>
+                {showDivider && (
+                  <div className="mx-3 my-2 border-t border-border/20" />
+                )}
                 {showGroupLabel && (
                   <div className="px-3 pt-4 pb-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                     {group}
                   </div>
                 )}
-                <Link
-                  to={to}
-                  onClick={onMobileClose}
-                  className={cn(
-                    "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                    isActive
-                      ? "bg-sidebar-primary text-sidebar-primary-foreground"
-                      : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                    !expanded && "justify-center px-2",
-                  )}
-                >
-                  <Icon className="h-5 w-5 shrink-0" />
-                  {expanded && <span>{label}</span>}
-                </Link>
+                <Tooltip content={label}>
+                  <Link
+                    to={to}
+                    onClick={onMobileClose}
+                    className={cn(
+                      "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                      isActive
+                        ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                        : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                      !expanded && "justify-center px-2",
+                    )}
+                  >
+                    <Icon className="h-5 w-5 shrink-0" />
+                    {expanded && <span>{label}</span>}
+                  </Link>
+                </Tooltip>
               </div>
             );
           })}

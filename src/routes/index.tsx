@@ -70,7 +70,7 @@ function Index() {
             <span className="text-primary dark:glow-text"> equilibrio</span>
           </h1>
           <p className="mt-6 max-w-lg text-lg text-muted-foreground">
-            Balanz te ayuda a gestionar tus ingresos, gastos y presupuestos de
+            Sumly te ayuda a gestionar tus ingresos, gastos y presupuestos de
             forma sencilla. Toma el control de tu dinero.
           </p>
 
@@ -129,7 +129,7 @@ function Index() {
         <div className="mx-auto flex max-w-5xl items-center justify-between">
           <AppLogo />
           <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} Balanz
+            &copy; {new Date().getFullYear()} Sumly
           </p>
         </div>
       </footer>
